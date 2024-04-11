@@ -1,0 +1,17 @@
+[package]
+name = "rust_postgres"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4"
+config = "0.13"
+deadpool-postgres = { version = "0.12", features = ["serde"] }
+serde = { version = "1.0.137", features = ["derive"] }
+tokio-pg-mapper = "0.2.0"
+tokio-pg-mapper-derive = "0.2.0"
+tokio-postgres = "0.7.6"
+env_logger = "0.11"
+log = "0.4"
+derive_more = "0.99.17"
+dotenvy = "0.15.7"
