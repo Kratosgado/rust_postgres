@@ -3,6 +3,11 @@ use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
 
+pub mod models;
+pub mod schema;
+
+use self::models::{Post, NewPost};
+
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
 
@@ -11,5 +16,14 @@ pub fn establish_connection() -> PgConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-pub mod models;
-pub mod schema;
+pub fn create_post(conn: &mut PgConnection, title: &str, body: &str) -> Post {
+    use crate::schema::posts;
+
+    let new_post = NewPost { title, body };
+
+    diesel::insert_into(posts::table)
+        .values(&new_post)
+        .returning(Post::as_returning())
+        .get_result(conn)
+        .expect("Error saving new post")
+}
